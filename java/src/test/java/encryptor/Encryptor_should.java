@@ -7,16 +7,10 @@ import org.junit.Test;
 public class Encryptor_should {
 
   @Test
-  public void cryptWordWithPlainAscii() {
-    String encrypted = new Encryptor().cryptWord("foobar!");
-    assertEquals("hqqdct#", encrypted);
+  public void test() {
+    fail("Not yet implemented");
   }
 
 
-    @Test
-    public void cryptWordWithSwedishChars() {
-        String encrypted = new Encryptor().cryptWord("åäö!");
-        assertEquals("çæø#", encrypted);
-    }
 
 }
