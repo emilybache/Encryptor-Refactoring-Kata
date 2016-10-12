@@ -8,4 +8,4 @@ Feel free to change public method signature and/or move methods to other public 
 Credits
 -------
 
-I got this code from Jeroen Megerink and David Baak, from their repo on github: https://github.com/daafith/Encryptor-Maven- Thankyou for permission to use it.
+I got this code from Jeroen Mengerink and David Baak, from their repo on github: https://github.com/daafith/Encryptor-Maven- Thankyou for permission to use it.
