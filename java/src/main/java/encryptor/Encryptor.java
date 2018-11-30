@@ -2,19 +2,10 @@ package encryptor;
 
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Encryptor {
-
-    public String cryptSentence(String sentence) {
-        char[] sentenceArray = sentence.toCharArray();
-        String newWord = "";
-        for (int i = 0; i < sentence.length(); i++) {
-            int charValue = sentenceArray[i];
-            newWord += String.valueOf((char) (charValue + 2));
-        }
-
-        return newWord;
-    }
 
     public void printWords(String sentence, PrintStream stream) {
         String[] words = getWords(sentence);
@@ -23,54 +14,53 @@ public class Encryptor {
         }
     }
 
+    public String cryptSentence(String sentence) {
+        return encrypt(sentence, this::encryptAsChar);
+    }
+
     String cryptWord(String word) {
-        if (word.contains(" "))
-            throw new InvalidParameterException();
-
-        char[] wordArray = word.toCharArray();
-        String newWord = "";
-        for (int i = 0; i < word.length(); i++) {
-            int charValue = wordArray[i];
-            newWord += String.valueOf((char) (charValue + 2));
-        }
-
-        return newWord;
+        if (word.contains(" ")) throw new InvalidParameterException();
+        return cryptSentence(word);
     }
 
     String cryptWordToNumbers(String word) {
-        if (word.contains(" "))
-            throw new InvalidParameterException();
-
-        char[] wordArray = word.toCharArray();
-        String newWord = "";
-        for (int i = 0; i < word.length(); i++) {
-            int charValue = wordArray[i];
-            newWord += String.valueOf(charValue + 2);
-        }
-
-        return newWord;
+        if (word.contains(" ")) throw new InvalidParameterException();
+        return encrypt(word, this::encryptAsNumber);
     }
 
     String cryptWord(String word, String charsToReplace) {
-        if (word.contains(" "))
-            throw new InvalidParameterException();
-
-        char[] wordArray = word.toCharArray();
-        char[] replacement = charsToReplace.toCharArray();
-        char[] result = wordArray.clone();
-        for (int i = 0; i < wordArray.length; i++) {
-            for (int j = 0; j < replacement.length; j++) {
-                if (replacement[j] == wordArray[i]) {
-                    int charValue = wordArray[i];
-                    result[i] = (char) (charValue + 2);
-                }
-            }
-        }
-        return String.valueOf(result);
+        if (word.contains(" ")) throw new InvalidParameterException();
+        return encrypt(word, encryptWithFilter(charsToReplace));
     }
 
     String[] getWords(String sentence) {
         return sentence.split(" ");
+    }
+
+    private String encryptAsChar(char charValue) {
+        return "" + (char) (charValue + 2);
+    }
+
+    private String encryptAsNumber(char charValue) {
+        return "" + (charValue + 2);
+    }
+
+    private Function<Character, String> encryptWithFilter(String charsToReplace) {
+        return charValue -> {
+            if (charsToReplace.contains("" + charValue)) {
+                return encryptAsChar(charValue);
+            } else {
+                return "" + charValue;
+            }
+        };
+    }
+
+    private String encrypt(String word, Function<Character, String> encryptorFunction) {
+        return word.chars()
+                .mapToObj(c -> (char) c)
+                .map(encryptorFunction)
+                .collect(Collectors.joining(""));
+
     }
 
 

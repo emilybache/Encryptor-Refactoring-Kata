@@ -1,21 +1,17 @@
 package encryptor;
 
 import org.approvaltests.Approvals;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
-
-public class EncryptorTest {
-
+public class EncryptorTestJunit4 {
     @Test
     public void cryptSentence() {
-      Approvals.verify(new Encryptor().cryptSentence("coding is like cooking"));
+        Approvals.verify(new Encryptor().cryptSentence("coding is like cooking"));
     }
 
 
@@ -33,9 +29,9 @@ public class EncryptorTest {
         Approvals.verify(new Encryptor().cryptWord("cooking"));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void cryptWordWithSpaces() {
-        assertThrows(InvalidParameterException.class, () -> new Encryptor().cryptWord("coding is like cooking"));
+        new Encryptor().cryptWord("coding is like cooking");
     }
 
     @Test
@@ -44,14 +40,14 @@ public class EncryptorTest {
     }
 
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void cryptWordToNumbersWithSpaces() {
-        assertThrows(InvalidParameterException.class, () -> new Encryptor().cryptWordToNumbers("coding  is like cooking"));
+        new Encryptor().cryptWordToNumbers("coding  is like cooking");
     }
 
-    @Test
+    @Test(expected = InvalidParameterException.class)
     public void cryptWordAndReplaceWithSpaces() {
-        assertThrows(InvalidParameterException.class, () -> new Encryptor().cryptWord("coding is like cooking", ""));
+        new Encryptor().cryptWord("coding is like cooking", "");
     }
 
     @Test
